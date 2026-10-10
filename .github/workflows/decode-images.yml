@@ -1,0 +1,20 @@
+name: Decode OG images
+on:
+  push:
+    paths: ['img-src/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  decode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p img
+          for f in img-src/*.b64; do base64 -d "$f" > "img/$(basename "$f" .b64)"; done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898099+github-actions[bot]@users.noreply.github.com"
+          git add img
+          git diff --cached --quiet || git commit -m "Decode OG images"
+          git push
