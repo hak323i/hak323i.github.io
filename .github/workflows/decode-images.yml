@@ -1,20 +1,29 @@
-name: Decode OG images
+name: Decode binary files
 on:
   push:
-    paths: ['img-src/**']
+    paths: ['img-src/**', 'free-src/**']
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: decode-binaries
+  cancel-in-progress: false
 jobs:
   decode:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - run: |
-          mkdir -p img
-          for f in img-src/*.b64; do base64 -d "$f" > "img/$(basename "$f" .b64)"; done
           git config user.name "github-actions[bot]"
           git config user.email "41898099+github-actions[bot]@users.noreply.github.com"
-          git add img
-          git diff --cached --quiet || git commit -m "Decode OG images"
-          git push
+          git pull --rebase origin main
+          find img-src free-src -name '*.b64' 2>/dev/null | while read -r f; do
+            case "$f" in img-src/*) out="img/${f#img-src/}";; free-src/*) out="free/${f#free-src/}";; esac
+            out="${out%.b64}"; mkdir -p "$(dirname "$out")"; base64 -d "$f" > "$out"
+          done
+          git add img free
+          git diff --cached --quiet && exit 0
+          git commit -m "Decode binary files"
+          for i in 1 2 3 4 5; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
