@@ -1,0 +1,8 @@
+Date,Outlet / location,Hot or cold,Sentinel (near/far/rotational),Target,Reading (C),Seconds to temperature,Pass/Fail,Action taken,Initials
+2026-10-01,Kitchen sink - nearest to cylinder,Hot,Near,>=50C within 60s,54.2,35,Pass,,AB
+2026-10-01,Top floor bathroom basin - furthest,Hot,Far,>=50C within 60s,51.0,55,Pass,,AB
+2026-10-01,Kitchen sink - nearest to cold tank,Cold,Near,<20C within 120s,14.8,40,Pass,,AB
+2026-10-01,Top floor bathroom basin - furthest,Cold,Far,<20C within 120s,19.1,110,Pass,,AB
+2026-10-01,Hot water cylinder flow,Hot,Storage,>=60C,61.5,,Pass,,AB
+,,,,,,,,,
+Notes: Sample only. Targets based on HSE HSG274 Part 2. Follow your own risk assessment. Full logbook template: https://www.etsy.com/uk/listing/4588569243/legionella-logbook-excel-template-uk
